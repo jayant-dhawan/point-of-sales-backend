@@ -36,6 +36,10 @@ app.use(function (err, req, res, next) {
     return res.status(401).json(errorResponse(err.name, err.message));
   }
 
+  if (err.message === "NOT_AUTHORIZED") {
+    return res.status(403).json(errorResponse(err.message, "Do not have permissions to access the endpoint"));
+  }
+
   // other errors
   res.status(err.status || 500);
   res.json(errorResponse(err.name, err.message));
