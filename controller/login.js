@@ -1,5 +1,3 @@
-const express = require("express");
-const router = express.Router();
 const validateEmail = require('validator').default.isEmail;
 var jwt = require('jsonwebtoken');
 
@@ -8,11 +6,15 @@ const UserModel = require('../model/user');
 const successResponse = require("../responses/success");
 const errorResponse = require("../responses/error");
 
-router.post('/', async function (req, res, next) {
+module.exports = async function (req, res) {
   const { email, password } = req.body;
 
-  if (!validateEmail(email)) { res.json(errorResponse("INVALID_EMAIL", "Email is invalid")) }
-  if (!password) { res.json(errorResponse("INVALID_PASSWORD", "Password is empty")) }
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === "Bearer") {
+    return res.json(successResponse(null, "User already logged in"));
+  }
+
+  if (email && !validateEmail(email)) { return res.json(errorResponse("INVALID_EMAIL", "Email is invalid")) }
+  if (!password) { return res.json(errorResponse("INVALID_PASSWORD", "Password is empty")) }
 
   try {
     const user = await UserModel.findOne({ email });
@@ -34,6 +36,4 @@ router.post('/', async function (req, res, next) {
   } catch (error) {
     res.status(500).json(errorResponse("UNKNOWN_ERROR", "There is some error please try after sometime."));
   }
-})
-
-module.exports = router;
+}

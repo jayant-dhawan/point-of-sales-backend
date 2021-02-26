@@ -31,7 +31,12 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  if (err.name === 'UnauthorizedError') {
+    // jwt authentication error
+    return res.status(401).json(errorResponse(err.name, err.message));
+  }
+
+  // other errors
   res.status(err.status || 500);
   res.json(errorResponse(err.name, err.message));
 });

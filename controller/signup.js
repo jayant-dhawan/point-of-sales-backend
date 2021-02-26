@@ -1,5 +1,3 @@
-const express = require("express");
-const router = express.Router();
 const validateEmail = require('validator').default.isEmail;
 
 const UserModel = require('../model/user');
@@ -7,12 +5,16 @@ const UserModel = require('../model/user');
 const successResponse = require("../responses/success");
 const errorResponse = require("../responses/error");
 
-router.post('/', async (req, res) => {
+module.exports = async function (req, res) {
   const { name, email, password } = req.body;
 
-  if (!name) { res.json(errorResponse("EMPTY_NAME", "Name field is empty")) }
-  if (!validateEmail(email)) { res.json(errorResponse("INVALID_EMAIL", "Email is invalid")) }
-  if (!password || password.length < 6) { res.json(errorResponse("INVALID_PASSWORD", "Password is either empty or less than 6 characters")) }
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === "Bearer") {
+    return res.json(successResponse(null, "User already logged in"));
+  }
+
+  if (email && !name) { return  res.json(errorResponse("EMPTY_NAME", "Name field is empty")) }
+  if (!validateEmail(email)) { return  res.json(errorResponse("INVALID_EMAIL", "Email is invalid")) }
+  if (!password || password.length < 6) { return  res.json(errorResponse("INVALID_PASSWORD", "Password is either empty or less than 6 characters")) }
 
   try {
     const user = await UserModel.create({ name, email, password });
@@ -25,6 +27,4 @@ router.post('/', async (req, res) => {
       res.status(500).json(errorResponse("UNKNOWN_ERROR", "There is some error please try after sometime."));
     }
   }
-})
-
-module.exports = router;
+}
