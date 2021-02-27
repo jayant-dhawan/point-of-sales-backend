@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 //Creating a Product Schema
 const ProductSchema = new Schema({
-  name: {
+  productName: {
     type: String,
     required: true
   },
@@ -33,8 +33,12 @@ const ProductSchema = new Schema({
   },
   image: {
     type: String
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false
   }
-});
+}, { versionKey: false, timestamps: true });
 
 //Creating a Product Model
 const ProductModel = mongoose.model('product', ProductSchema);

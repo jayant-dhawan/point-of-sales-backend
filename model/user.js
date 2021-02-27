@@ -23,7 +23,7 @@ const UserSchema = new Schema({
     type: String,
     default: "manager"
   }
-});
+}, { versionKey: false, timestamps: true });
 
 /**
  * This function will hash the password before 

@@ -17,7 +17,8 @@ const SaleSchema = new Schema({
     productName: String,
     ProductId: mongoose.Types.ObjectId,
     price: Number,
-    discount: Number
+    discount: Number,
+    count: Number
   }],
   totalDiscount: {
     type: Number,
@@ -31,7 +32,7 @@ const SaleSchema = new Schema({
     type: Number,
     default: 0
   }
-});
+}, { versionKey: false, timestamps: true });
 
 //Creating a Sale Model
 const SaleModel = mongoose.model('sale', SaleSchema);
