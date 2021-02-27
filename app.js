@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('pino-http')();
+const cors = require("cors");
 
 const router = require('./routes');
 const mongo = require("./configs/mongo-config");
@@ -11,6 +12,7 @@ const errorResponse = require("./responses/error");
 
 const app = express();
 
+app.use(cors({ origin: ['http://localhost:8000', 'http://localhost:8080'] }))
 app.use(logger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
