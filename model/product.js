@@ -11,7 +11,6 @@ const ProductSchema = new Schema({
   category: {
     type: String,
     required: true,
-    unique: true,
     index: true
   },
   price: {
