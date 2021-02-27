@@ -20,13 +20,13 @@ module.exports = async function (req, res) {
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      res.json(errorResponse("USER_NOT_FOUND", `User with ${email} donot exist please sign up.`));
+      return res.json(errorResponse("USER_NOT_FOUND", `User with ${email} donot exist please sign up.`));
     }
 
     const validate = await user.isValidPassword(password);
 
     if (!validate) {
-      res.json(errorResponse("INVALID_PASSWORD", `Email/Password do not match`));
+      return res.json(errorResponse("INVALID_PASSWORD", `Email/Password do not match`));
     }
 
     const token = jwt.sign({ email: user.email, name: user.name, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d', algorithm: "HS256" });
