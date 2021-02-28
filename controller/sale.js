@@ -2,6 +2,7 @@ const isNumber = require("validator").default.isNumeric;
 const isMongoId = require("validator").default.isMongoId;
 
 const SaleModel = require("../model/sale");
+const ProductModel = require("../model/product");
 const successResponse = require("../responses/success");
 const errorResponse = require("../responses/error");
 
@@ -15,11 +16,11 @@ exports.createSale = async function (req, res) {
   if (!products) { return res.json(errorResponse("INVALID_INPUT", "Products list is required to complete the sale")) }
   if (!Array.isArray(products) || products.length == 0) { return res.json(errorResponse("INVALID_INPUT", "Product List is invalid")) }
   if (!totalDiscount) { return res.json(errorResponse("INVALID_INPUT", "Employee id is required to complete the sale")) }
-  if (!isNumber(totalDiscount) || totalDiscount < 0) { return res.json(errorResponse("INVALID_INPUT", "Total Discount is an invalid value")) }
+  if (!isNumber(totalDiscount.toString()) || totalDiscount < 0) { return res.json(errorResponse("INVALID_INPUT", "Total Discount is an invalid value")) }
   if (!vat) { return res.json(errorResponse("INVALID_INPUT", "VAT is required to complete the sale")) }
-  if (!isNumber(vat) || vat < 0) { return res.json(errorResponse("INVALID_INPUT", "VAT is an invalid value")) }
+  if (!isNumber(vat.toString()) || vat < 0) { return res.json(errorResponse("INVALID_INPUT", "VAT is an invalid value")) }
   if (!total) { return res.json(errorResponse("INVALID_INPUT", "Total value is required to complete the sale")) }
-  if (!isNumber(total) || total < 0) { return res.json(errorResponse("INVALID_INPUT", "Total is an invalid value")) }
+  if (!isNumber(total.toString()) || total < 0) { return res.json(errorResponse("INVALID_INPUT", "Total is an invalid value")) }
 
   try {
     const sale = { employeeId, dateOfSale, products, totalDiscount, vat, total };
