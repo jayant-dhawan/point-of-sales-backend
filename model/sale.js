@@ -15,7 +15,7 @@ const SaleSchema = new Schema({
   },
   products: [{
     productName: String,
-    ProductId: mongoose.Types.ObjectId,
+    _id: mongoose.Types.ObjectId,
     price: Number,
     discount: Number,
     count: Number
