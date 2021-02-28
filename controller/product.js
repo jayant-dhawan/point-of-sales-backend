@@ -38,11 +38,11 @@ exports.addProduct = async function (req, res) {
   if (!productName) { return res.json(errorResponse("EMPTY_FIELD", "Name is required to add product")) }
   if (!category) { return res.json(errorResponse("EMPTY_FIELD", "Category is required to add product")) }
   if (!price) { return res.json(errorResponse("EMPTY_FIELD", "Price is required to add product")) }
-  if (!isNumber(price) || parseInt(price) < 0) { return res.json(errorResponse("INVALID_INPUT", "Price is not a number")) }
+  if (!isNumber(price.toString()) || parseInt(price) < 0) { return res.json(errorResponse("INVALID_INPUT", "Price is not a number")) }
   if (!available) { return res.json(errorResponse("EMPTY_FIELD", "Available Units is required to add product")) }
-  if (!isNumber(available) || parseInt(available) < 0) { return res.json(errorResponse("INVALID_INPUT", "available is not a number")) }
+  if (!isNumber(available.toString()) || parseInt(available) < 0) { return res.json(errorResponse("INVALID_INPUT", "available is not a number")) }
   if (!vat) { return res.json(errorResponse("EMPTY_FIELD", "VAT is required to add product")) }
-  if (!isNumber(vat) || parseInt(vat) < 0 || parseInt(vat) > 100) { return res.json(errorResponse("INVALID_INPUT", "VAT is an invalid value")) }
+  if (!isNumber(vat.toString()) || parseInt(vat) < 0 || parseInt(vat) > 100) { return res.json(errorResponse("INVALID_INPUT", "VAT is an invalid value")) }
   if (discount && parseInt(discount) < 0 || parseInt(discount) > 100) { return res.json(errorResponse("INVALID_INPUT", "Discount is an invalid value")) }
 
   try {
@@ -70,9 +70,9 @@ exports.updateProduct = async function (req, res) {
 
   //Validations
   if (_id && !isMongoId(_id)) { return res.json(errorResponse("INVALID_INPUT", "Product id is not a valid product id")) }
-  if (price && !isNumber(price) || parseInt(price) < 0) { return res.json(errorResponse("INVALID_INPUT", "Price is not a number")) }
-  if (available && !isNumber(available) || parseInt(available) < 0) { return res.json(errorResponse("INVALID_INPUT", "available is not a number")) }
-  if (vat && !isNumber(vat) || parseInt(vat) < 0 || parseInt(vat) > 100) { return res.json(errorResponse("INVALID_INPUT", "VAT is an invalid value")) }
+  if (price && !isNumber(price.toString()) || parseInt(price) < 0) { return res.json(errorResponse("INVALID_INPUT", "Price is not a number")) }
+  if (available && !isNumber(available.toString()) || parseInt(available) < 0) { return res.json(errorResponse("INVALID_INPUT", "available is not a number")) }
+  if (vat && !isNumber(vat.toString()) || parseInt(vat) < 0 || parseInt(vat) > 100) { return res.json(errorResponse("INVALID_INPUT", "VAT is an invalid value")) }
   if (discount && parseInt(discount) < 0 || parseInt(discount) > 100) { return res.json(errorResponse("INVALID_INPUT", "Discount is an invalid value")) }
 
   try {
@@ -95,15 +95,15 @@ exports.updateProduct = async function (req, res) {
  * DELETE request to handle deleting a product from database
  */
 exports.deleteProduct = async function (req, res) {
-  const { _id } = req.body;
+  const { id } = req.query;
 
   //Validations
-  if (_id && !isMongoId(_id)) { return res.json(errorResponse("INVALID_INPUT", "Product id is not a valid product id")) }
+  if (id && !isMongoId(id)) { return res.json(errorResponse("INVALID_INPUT", "Product id is not a valid product id")) }
 
   try {
-    const response = await ProductModel.updateOne({ _id }, { isDeleted: true });
+    const response = await ProductModel.updateOne({ _id: id }, { isDeleted: true });
 
-    if (response.n > 0) { res.json(successResponse({ _id }, "Product deleted successfully")) }
+    if (response.n > 0) { res.json(successResponse({ id }, "Product deleted successfully")) }
     else if (response.n == 0) { res.json(errorResponse("NOT_FOUND", "Product not found")) }
   } catch (error) {
     res.status(500).json(errorResponse("UNKNOWN_ERROR", "There is some error please try after sometime."));
