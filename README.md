@@ -28,7 +28,7 @@ Example request body:
 
 No authentication required
 
-Required fields: `email`, `name`, `password
+Required fields: `email`, `name`, `password`
 
 ### Login
 
