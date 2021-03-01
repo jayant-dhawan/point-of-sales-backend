@@ -18,6 +18,7 @@ const SaleSchema = new Schema({
     _id: mongoose.Types.ObjectId,
     price: Number,
     discount: Number,
+    available: Number,
     count: Number
   }],
   totalDiscount: {
