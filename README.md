@@ -13,6 +13,10 @@ For routes which require authentication send jwt token in header like below
 
 For routes ehich require a user role, roles are mentioned.
 
+## Default Admin
+
+To create default admin add details for admin in `.env` file. Check [details below](#configuration)
+
 ### Registration:
 
 `POST /register`
@@ -156,5 +160,10 @@ DBURL = mongodb://localhost:27017/pos
 
 #JWT Secret to verify JWT tokens
 JWT_SECRET = YOUR_SECRET
+
+#Create default admin at startup
+ADMIN_NAME = NAME_OF_ADMIN
+ADMIN_EMAIL = EMAIL_FOR_ADMIN
+ADMIN_PASSWORD = PASSWORD_FOR_ADMIN
 ```
 
