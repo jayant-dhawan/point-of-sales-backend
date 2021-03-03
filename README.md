@@ -6,10 +6,12 @@ This is an Assignment for Codinova Job Interview Process.
 ## Endpoints:
 
 For routes which require authentication send jwt token in header like below 
+```
 {
     headers: {
         Authorization: `Bearer ${jwt}`
 }
+```
 
 For routes ehich require a user role, roles are mentioned.
 
