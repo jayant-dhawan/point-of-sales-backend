@@ -12,7 +12,9 @@ module.exports = async function (req, res) {
     return res.json(successResponse(null, "User already logged in"));
   }
 
-  if (email && !name) { return  res.json(errorResponse("EMPTY_FIELD", "Name is required for signup")) }
+  //Validations
+  if (!name) { return  res.json(errorResponse("EMPTY_FIELD", "Name is required for signup")) }
+  if (!email) { return  res.json(errorResponse("EMPTY_FIELD", "Email is required for signup")) }
   if (!validateEmail(email)) { return  res.json(errorResponse("INVALID_EMAIL", "Email is invalid")) }
   if (!password || password.length < 6) { return  res.json(errorResponse("INVALID_PASSWORD", "Password is either empty or less than 6 characters")) }
 
